@@ -1,7 +1,7 @@
 const db = require('../services/db');
 
-async function getData(){
-  const data = await db.query('SELECT * FROM skills');
+async function getData(managerId){
+  const data = await db.query(`SELECT * FROM skills where managerId = ${managerId}`);
   return {
     data
   };

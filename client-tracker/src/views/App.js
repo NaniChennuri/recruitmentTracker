@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import Select from 'react-select';
-import { options } from '../models/hiringManager';
 import SkilledTable from '../views/components/skilledTable';
-import {fetchHiringManagers} from '../middleware/sampleAPI';
+import { fetchHiringManagers, fetchSkills } from '../middleware/sampleAPI';
+import { getSkillsAction } from '../stores/sampleReducer/action'; 
 import './App.scss';
 
 export default function App() {
-  const [manager, setManager] = useState(null);
   const dispatch = useDispatch();
-  const managers = useSelector((state) => state.exampleReducer.managers);
+  const managersData = useSelector((state) => state.exampleReducer.managers);
+  const skillsData = useSelector((state) => state.exampleReducer.skills);
 
   useEffect(() => {
     dispatch(fetchHiringManagers());
   }, []);
 
   const handleChange = (event) => {
-    if(event !== null)
-      setManager(event.label);
-    else
-      setManager(null)
+    if(event !== null) {
+      dispatch(fetchSkills(event.id));
+    }
+    else {
+      dispatch(getSkillsAction([]));
+    }
   }
 
   return (
@@ -33,7 +35,7 @@ export default function App() {
         </div>
         <div className='hiringManager'>
           <Select 
-            options={managers}
+            options={managersData}
             isClearable={true}
             placeholder="Select Hiring Manager"
             onChange={(e) => handleChange(e)}
@@ -41,8 +43,10 @@ export default function App() {
         </div>
       </header>
       {
-        manager &&
-        <SkilledTable/>
+        (skillsData && skillsData.length !== 0) &&
+        <SkilledTable
+          skillsData = {skillsData}
+        />
       }
     </>
   );

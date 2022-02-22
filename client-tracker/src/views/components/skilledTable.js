@@ -3,7 +3,6 @@ import './skilledTable.scss';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { TABLE_COLS } from "../../models/skilledCols";
-import { TABLE_ROWS } from "../../models/skilledRows";
 
 const SkilledTable = (props) => {
     const [data, setData] = useState([]);
@@ -12,8 +11,8 @@ const SkilledTable = (props) => {
 
 
     useEffect(() => {
-        setData(TABLE_ROWS);
-    }, []);
+        setData(props.skillsData);
+    }, [props.skillsData]);
 
     const headerItems = () => {
         let header = [];
