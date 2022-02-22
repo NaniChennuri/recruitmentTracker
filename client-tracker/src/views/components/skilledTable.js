@@ -58,7 +58,7 @@ const SkilledTable = (props) => {
             const tbody = data[row];
             let item = (
                 <tr key={tbody.id}>
-                    <td contentEditable="true" onInput={(e) => handleChange("technology", row, e)}>{tbody.technology}</td>
+                    <td>{tbody.technology}</td>
                     <td>
                         <DatePicker selected={new Date(tbody.oDate)} onChange={(e) => handleChange("oDate", row, e)} />
                     </td>

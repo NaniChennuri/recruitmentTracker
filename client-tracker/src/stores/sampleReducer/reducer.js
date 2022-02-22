@@ -1,16 +1,17 @@
 import * as Types from './constant';
 
 const initialState = {
-    items: [],
+    managers: [],
 };
 
 const reducerForm = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch(type) {
-        case Types.EXAMPLE_CONSTANT:
+        case Types.FETCH_MANAGERS:
             return {
-                ...state
+                ...state,
+                managers: payload
             };
         default:
             return state;
