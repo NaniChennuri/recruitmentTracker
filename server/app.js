@@ -4,6 +4,23 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require("cors");
+const mysql = require("mysql2");
+
+const connection = mysql.createConnection({
+  host: "localhost",
+  port: 3306,
+  database: "tracker",
+  user: "root",
+  password: "chennurians21"
+});
+
+connection.connect((err) => {
+  if(err) {
+    console.log("error occured while connecting to DB");
+  } else {
+    console.log("connection created with Mysql successfully");
+  }
+});
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -23,7 +40,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/fetchManagers', indexRouter);
-app.use('/', usersRouter);
+app.use('/skills', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -32,13 +49,11 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.status(err.status || 500).json({'message': err.message});
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  return;
 });
 
 app.listen(port, () => console.log('API server started on: ' + port));
