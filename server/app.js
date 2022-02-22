@@ -4,23 +4,25 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require("cors");
-const mysql = require("mysql2");
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  database: "tracker",
-  user: "root",
-  password: "chennurians21"
-});
+// To Check SQL Connection
+// const mysql = require("mysql2");
 
-connection.connect((err) => {
-  if(err) {
-    console.log("error occured while connecting to DB");
-  } else {
-    console.log("connection created with Mysql successfully");
-  }
-});
+// const connection = mysql.createConnection({
+//   host: "localhost",
+//   port: 3306,
+//   database: "tracker",
+//   user: "root",
+//   password: "chennurians21"
+// });
+
+// connection.connect((err) => {
+//   if(err) {
+//     console.log("error occured while connecting to DB");
+//   } else {
+//     console.log("connection created with Mysql successfully");
+//   }
+// });
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
