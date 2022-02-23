@@ -16,7 +16,7 @@ export const TABLE_COLS = {
         type: "string"
     },
     shortlist: {
-        displayName: "Shortlist",
+        displayName: "Shortlisted",
         type: "string"
     },
     offer: {

@@ -1,14 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './skilledTable.scss';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { TABLE_COLS } from "../../models/skilledCols";
+import ReviewTracker from '../reviewTracker/review';
+import Modal from '../modal/modal';
+import { TABLE_COLS } from "../../../models/skilledCols";
 
 const SkilledTable = (props) => {
     const [data, setData] = useState([]);
     const [timer, setTimer] = useState(null);
     const [isDataUpdated, setIsDataUpdated] = useState(false);
-
+    const [isModal, setModal] = useState(false);
 
     useEffect(() => {
         setData(props.skillsData);
@@ -28,27 +30,16 @@ const SkilledTable = (props) => {
     }
 
     const handleChange = (type, row, event) => {
-        if(type === 'oDate') {
-            var dd = String(event.getDate()).padStart(2, '0');
-            var mm = String(event.getMonth() + 1).padStart(2, '0');
-            var yyyy = event.getFullYear();
-
-            let tdata = [...data];             
-            tdata[row][type] = mm + '-' + dd + '-' + yyyy;
-            setData(tdata);
-            setIsDataUpdated(true);
-        } else {
-            let updatedData = event.currentTarget.textContent;
-            clearTimeout(timer);
-            setTimer(
-                setTimeout(() => {   
-                    let tdata = [...data];             
-                    tdata[row][type] = updatedData;
-                    setData(tdata);
-                    setIsDataUpdated(true);
-                }, 3000)
-            );
-        }        
+        let updatedData = event.currentTarget.textContent;
+        clearTimeout(timer);
+        setTimer(
+            setTimeout(() => {
+                let tdata = [...data];
+                tdata[row][type] = updatedData;
+                setData(tdata);
+                setIsDataUpdated(true);
+            }, 1000)
+        );
     }
 
     const getTbody = () => {
@@ -57,9 +48,9 @@ const SkilledTable = (props) => {
             const tbody = data[row];
             let item = (
                 <tr key={tbody.id}>
-                    <td>{tbody.technology}</td>
+                    <td className='skillHeader' onClick={() => setModal(true)}>{tbody.technology}</td>
                     <td>
-                        <DatePicker selected={new Date(tbody.oDate)} onChange={(e) => handleChange("oDate", row, e)} />
+                        <DatePicker selected={new Date(tbody.oDate)} disabled/>
                     </td>
                     <td contentEditable="true" onInput={(e) => handleChange("open_positions", row, e)}>{tbody.open_positions}</td>
                     <td contentEditable="true" onInput={(e) => handleChange("interviewed", row, e)}>{tbody.interviewed}</td>
@@ -84,11 +75,22 @@ const SkilledTable = (props) => {
                 </tbody>
             </table>
             {
-                isDataUpdated 
+                isDataUpdated
                 &&
                 <button className='updateBtn'>Update</button>
             }
-            
+            <Modal
+                modalWidth="md"
+                dividers={false}
+                showModal={isModal}
+                heading={"Review Tracker"}
+                handleClose={() => {
+                    setModal(false);
+                }}
+                noHeader={false}
+            >
+                <ReviewTracker />
+            </Modal>
         </div>
     )
 };

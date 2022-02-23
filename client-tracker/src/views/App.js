@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import Select from 'react-select';
-import SkilledTable from '../views/components/skilledTable';
+import SkilledTable from './components/skilledTable/skilledTable';
 import { fetchHiringManagers, fetchSkills } from '../middleware/sampleAPI';
 import { getSkillsAction } from '../stores/sampleReducer/action'; 
 import './App.scss';
