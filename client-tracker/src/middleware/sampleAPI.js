@@ -1,6 +1,10 @@
 import apiRequest from "../utilities/services";
 import { API_ENDPOINTS } from '../utilities/url';
-import { getManagersAction, getSkillsAction } from '../stores/sampleReducer/action';
+import { getManagersAction, 
+    getSkillsAction, 
+    postSkillsSuccessAction, 
+    postSkillsAction
+} from '../stores/sampleReducer/action';
 
 const onSuccessManagers = (managersData, dispatch) => {
     let options = [];
@@ -56,3 +60,17 @@ export const fetchSkills = (payload) => async (dispatch) => {
         console.log("Error", err);
     }
 };
+
+export const updateSkills = (payload) => async (dispatch) => {
+    try {
+        await postSkillsAction();
+        await apiRequest({
+            method: "PUT",
+            url: API_ENDPOINTS.POST_SKILLS,
+            data: payload
+        });
+        await postSkillsSuccessAction();
+    } catch (err) {
+        console.log("Error", err);
+    }
+}

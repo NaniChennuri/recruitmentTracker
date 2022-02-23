@@ -1,2 +1,4 @@
 export const FETCH_MANAGERS = "FETCH_MANAGERS";
 export const FETCH_SKILLS = "FETCH_SKILLS";
+export const POST_SKILLS = "POST_SKILLS";
+export const POST_SKILLS_SUCCESS = "POST_SKILLS_SUCCESS";

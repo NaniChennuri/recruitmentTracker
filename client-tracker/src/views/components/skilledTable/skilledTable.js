@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux'
 import './skilledTable.scss';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ReviewTracker from '../reviewTracker/review';
 import Modal from '../modal/modal';
 import { TABLE_COLS } from "../../../models/skilledCols";
+import { updateSkills } from "../../../middleware/sampleAPI";
 
 const SkilledTable = (props) => {
+    const dispatch = useDispatch();
     const [data, setData] = useState([]);
-    const [timer, setTimer] = useState(null);
     const [isDataUpdated, setIsDataUpdated] = useState(false);
     const [isModal, setModal] = useState(false);
 
@@ -30,16 +32,19 @@ const SkilledTable = (props) => {
     }
 
     const handleChange = (type, row, event) => {
-        let updatedData = event.currentTarget.textContent;
-        clearTimeout(timer);
-        setTimer(
-            setTimeout(() => {
-                let tdata = [...data];
-                tdata[row][type] = updatedData;
-                setData(tdata);
-                setIsDataUpdated(true);
-            }, 1000)
-        );
+        let tdata = [...data];
+        if(type === 'open_positions' || type === 'interviewed' || type === 'shortlist' || type === 'offer') {
+            tdata[row][type] = parseInt(event.target.value);
+        } else {
+            tdata[row][type] = event.target.value;
+        }
+        setData(tdata);
+        setIsDataUpdated(true);
+    }
+
+    const handleBtn = () => {
+        dispatch(updateSkills(data));
+        setIsDataUpdated(false);
     }
 
     const getTbody = () => {
@@ -49,14 +54,12 @@ const SkilledTable = (props) => {
             let item = (
                 <tr key={tbody.id}>
                     <td className='skillHeader' onClick={() => setModal(true)}>{tbody.technology}</td>
-                    <td>
-                        <DatePicker selected={new Date(tbody.oDate)} disabled/>
-                    </td>
-                    <td contentEditable="true" onInput={(e) => handleChange("open_positions", row, e)}>{tbody.open_positions}</td>
-                    <td contentEditable="true" onInput={(e) => handleChange("interviewed", row, e)}>{tbody.interviewed}</td>
-                    <td contentEditable="true" onInput={(e) => handleChange("shortlist", row, e)}>{tbody.shortlist}</td>
-                    <td contentEditable="true" onInput={(e) => handleChange("offer", row, e)}>{tbody.offer}</td>
-                    <td contentEditable="true" onInput={(e) => handleChange("Status", row, e)}>{tbody.Status}</td>
+                    <td><DatePicker selected={new Date(tbody.oDate)} disabled/></td>
+                    <td><input type="number" min="0" onChange={(e) => handleChange("open_positions", row, e)} value={tbody.open_positions}/></td>
+                    <td><input type="number" min="0" onChange={(e) => handleChange("interviewed", row, e)} value={tbody.interviewed}/></td>
+                    <td><input type="number" min="0" onChange={(e) => handleChange("shortlist", row, e)} value={tbody.shortlist}/></td>
+                    <td><input type="number" min="0" onChange={(e) => handleChange("offer", row, e)} value={tbody.offer}/></td>
+                    <td><input type="text" onChange={(e) => handleChange("Status", row, e)} value={tbody.Status}/></td>
                 </tr>
             );
             rows.push(item);
@@ -77,7 +80,7 @@ const SkilledTable = (props) => {
             {
                 isDataUpdated
                 &&
-                <button className='updateBtn'>Update</button>
+                <button className='updateBtn' onClick={() => handleBtn()}>Update</button>
             }
             <Modal
                 modalWidth="md"

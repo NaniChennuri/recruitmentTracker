@@ -3,6 +3,7 @@ import * as Types from './constant';
 const initialState = {
     managers: [],
     skills: [],
+    isLoading: false
 };
 
 const reducerForm = (state = initialState, action) => {
@@ -19,6 +20,16 @@ const reducerForm = (state = initialState, action) => {
                 ...state,
                 skills: payload
             };
+        case Types.POST_SKILLS:
+            return {
+                ...state,
+                isLoading: true
+            };
+        case Types.POST_SKILLS_SUCCESS:
+            return {
+                ...state,
+                isLoading: false
+            }
         default:
             return state;
     }
