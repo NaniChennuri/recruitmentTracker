@@ -28,7 +28,7 @@ const Modal = ({ classes, ...props }) => {
     const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
-        if(props.showModal !== undefined)
+        if (props.showModal !== undefined)
             setOpenModal(props.showModal);
     }, [props.showModal]);
 
@@ -50,12 +50,13 @@ const Modal = ({ classes, ...props }) => {
                 {!props.noHeader && (
                     <DialogTitle id="scroll-dialog-title">
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <div className="modal-title">{props.heading}</div>
                             <IconButton
                                 aria-label="Close"
                                 onClick={() => props.handleClose()}
                                 style={{ padding: "0px" }}
                             >
-                                {!props.noClose && <CloseIcon/>}
+                                {!props.noClose && <CloseIcon />}
                             </IconButton>
                         </div>
                     </DialogTitle>

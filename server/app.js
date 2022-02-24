@@ -26,6 +26,7 @@ const cors = require("cors");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var reviewRouter = require('./routes/review');
 
 var app = express();
 const port = process.env.PORT || 8080;
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/fetchManagers', indexRouter);
 app.use('/skills', usersRouter);
+app.use('/reviewSkills', reviewRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -28,3 +28,26 @@ export const TABLE_COLS = {
         type: "string"
     }
 };
+
+export const REVIEW_TABLE_COLS = {
+    open_positions: {
+        displayName: "Open Positions",
+        type: "string"
+    },
+    interviewed: {
+        displayName: "Interviewed",
+        type: "string"
+    },
+    shortlist: {
+        displayName: "Shortlisted",
+        type: "string"
+    },
+    offer: {
+        displayName: "offered",
+        type: "string"
+    },
+    Status: {
+        displayName: "Status",
+        type: "string"
+    }
+};

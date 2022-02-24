@@ -1,14 +1,16 @@
 import apiRequest from "../utilities/services";
 import { API_ENDPOINTS } from '../utilities/url';
-import { getManagersAction, 
-    getSkillsAction, 
-    postSkillsSuccessAction, 
-    postSkillsAction
+import {
+    getManagersAction,
+    getSkillsAction,
+    postSkillsSuccessAction,
+    postSkillsAction,
+    reviewSkillAction
 } from '../stores/sampleReducer/action';
 
 const onSuccessManagers = (managersData, dispatch) => {
     let options = [];
-    for(var manager of managersData) {
+    for (var manager of managersData) {
         let managers = {};
         managers.id = manager.id;
         managers.label = manager.name;
@@ -21,7 +23,7 @@ const onSuccessManagers = (managersData, dispatch) => {
 
 const onSuccessSkills = (skillsData, dispatch) => {
     let options = [];
-    for(var skill of skillsData) {
+    for (var skill of skillsData) {
         let skills = {};
         skills.id = skill.id;
         skills.technology = skill.skill;
@@ -37,11 +39,27 @@ const onSuccessSkills = (skillsData, dispatch) => {
     dispatch(getSkillsAction(options));
 }
 
+const onSuccessReviewSkills = (reviewData, dispatch) => {
+    let options = [];
+    for (var review of reviewData) {
+        let reviews = {};
+        reviews.id = review.id;
+        reviews.open_positions = review.oPos;
+        reviews.interviewed = review.interviewd;
+        reviews.shortlist = review.shortlisted;
+        reviews.offer = review.offered;
+        reviews.Status = review.posStatus;
+        reviews.managerId = review.skillsId;
+        options.push(reviews);
+    }
+    dispatch(reviewSkillAction(options));
+}
+
 export const fetchHiringManagers = (payload) => async (dispatch) => {
     try {
         const res = await apiRequest({
             method: "GET",
-            url: API_ENDPOINTS.FETCH_HIRING_MANAGER, 
+            url: API_ENDPOINTS.FETCH_HIRING_MANAGER,
         });
         await onSuccessManagers(res.data.data, dispatch);
     } catch (err) {
@@ -70,6 +88,20 @@ export const updateSkills = (payload) => async (dispatch) => {
             data: payload
         });
         await postSkillsSuccessAction();
+    } catch (err) {
+        console.log("Error", err);
+    }
+}
+
+export const reviewSkills = (payload) => async (dispatch) => {
+    try {
+        const res = await apiRequest({
+            method: "GET",
+            url: API_ENDPOINTS.REVIEW_SKILLS,
+            params: { ...payload }
+        });
+
+        await onSuccessReviewSkills(res.data.data, dispatch);
     } catch (err) {
         console.log("Error", err);
     }

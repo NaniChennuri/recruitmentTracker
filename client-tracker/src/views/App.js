@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Select from 'react-select';
 import SkilledTable from './components/skilledTable/skilledTable';
 import { fetchHiringManagers, fetchSkills } from '../middleware/sampleAPI';
-import { getSkillsAction } from '../stores/sampleReducer/action'; 
+import { getSkillsAction } from '../stores/sampleReducer/action';
 import './App.scss';
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
   }, []);
 
   const handleChange = (event) => {
-    if(event !== null) {
+    if (event !== null) {
       dispatch(fetchSkills(event.id));
     }
     else {
@@ -34,7 +34,7 @@ export default function App() {
           </a>
         </div>
         <div className='hiringManager'>
-          <Select 
+          <Select
             options={managersData}
             isClearable={true}
             placeholder="Select Hiring Manager"
@@ -45,7 +45,7 @@ export default function App() {
       {
         (skillsData && skillsData.length !== 0) &&
         <SkilledTable
-          skillsData = {skillsData}
+          skillsData={skillsData}
         />
       }
     </>

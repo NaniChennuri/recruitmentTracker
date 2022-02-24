@@ -4,4 +4,5 @@ export const API_ENDPOINTS = {
   FETCH_HIRING_MANAGER: baseURL + "fetchManagers",
   FETCH_SKILLS: baseURL + "skills/",
   POST_SKILLS: baseURL + "skills/",
+  REVIEW_SKILLS: baseURL + "reviewSkills"
 };

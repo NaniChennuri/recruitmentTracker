@@ -13,6 +13,7 @@ const SkilledTable = (props) => {
     const [data, setData] = useState([]);
     const [isDataUpdated, setIsDataUpdated] = useState(false);
     const [isModal, setModal] = useState(false);
+    const [clickedSkill, setClickedSkill] = useState({ "skill": null, "skillId": null});
 
     useEffect(() => {
         setData(props.skillsData);
@@ -47,19 +48,32 @@ const SkilledTable = (props) => {
         setIsDataUpdated(false);
     }
 
+    const handleSkillClick = (skill, skillId) => {
+        let temp = JSON.parse(JSON.stringify(clickedSkill));
+        temp["skill"] = skill;
+        temp["skillId"] = skillId;
+        setClickedSkill(temp);
+        setModal(true);
+    }
+
     const getTbody = () => {
         let rows = [];
         for (let row in data) {
             const tbody = data[row];
             let item = (
                 <tr key={tbody.id}>
-                    <td className='skillHeader' onClick={() => setModal(true)}>{tbody.technology}</td>
+                    <td className='skillHeader' onClick={() => handleSkillClick(tbody.technology, tbody.id)}>{tbody.technology}</td>
                     <td><DatePicker selected={new Date(tbody.oDate)} disabled/></td>
                     <td><input type="number" min="0" onChange={(e) => handleChange("open_positions", row, e)} value={tbody.open_positions}/></td>
                     <td><input type="number" min="0" onChange={(e) => handleChange("interviewed", row, e)} value={tbody.interviewed}/></td>
                     <td><input type="number" min="0" onChange={(e) => handleChange("shortlist", row, e)} value={tbody.shortlist}/></td>
                     <td><input type="number" min="0" onChange={(e) => handleChange("offer", row, e)} value={tbody.offer}/></td>
-                    <td><input type="text" onChange={(e) => handleChange("Status", row, e)} value={tbody.Status}/></td>
+                    <td>
+                        <select value={tbody.Status} onChange={(e) => handleChange("Status", row, e)}>
+                            <option value="closed">Closed</option>
+                            <option value="open">Open</option>
+                        </select>
+                    </td>
                 </tr>
             );
             rows.push(item);
@@ -83,16 +97,19 @@ const SkilledTable = (props) => {
                 <button className='updateBtn' onClick={() => handleBtn()}>Update</button>
             }
             <Modal
-                modalWidth="md"
+                modalWidth="sm"
                 dividers={false}
                 showModal={isModal}
-                heading={"Review Tracker"}
+                heading={`Review ${clickedSkill.skill}`}
                 handleClose={() => {
                     setModal(false);
                 }}
                 noHeader={false}
             >
-                <ReviewTracker />
+                <ReviewTracker 
+                    onClose={() =>setModal(false)}
+                    skillDetails={clickedSkill}
+                />
             </Modal>
         </div>
     )

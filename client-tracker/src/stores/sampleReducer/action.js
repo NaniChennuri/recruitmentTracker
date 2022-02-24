@@ -17,3 +17,8 @@ export const postSkillsAction = () => ({
 export const postSkillsSuccessAction = () => ({
     type: Types.POST_SKILLS_SUCCESS,
 });
+
+export const reviewSkillAction = (values) => ({
+    type: Types.REVIEW_SKILLS,
+    payload: values,
+})
